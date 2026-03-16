@@ -253,12 +253,12 @@ export async function exportDocument(doc: LightDocument, format: DocumentFormat)
   return new Uint8Array(pdfBytes.buffer);
 }
 
-export function triggerDownload(bytes: Uint8Array, filename: string, mimeType = 'application/pdf') {
-  const blob = new Blob([bytes as BlobPart], { type: mimeType });
+export function triggerDownload(bytes: Uint8Array, filename: string) {
+  const blob = new Blob([bytes as BlobPart], { type: 'application/octet-stream' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = filename;
+  a.download = filename; // e.g. "my_document.lpdx"
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
