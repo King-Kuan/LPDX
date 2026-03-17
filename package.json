@@ -20,6 +20,7 @@
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "tesseract.js": "^7.0.0"
+    "pdfjs-dist": "^4.4.168"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
