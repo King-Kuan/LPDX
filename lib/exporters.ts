@@ -80,6 +80,12 @@ export async function downloadAsPdf(document: LightDoc) {
     }
   }
 
-  const bytes = await pdf.save();
-  triggerDownload(`${safeName(document.meta.title)}.pdf`, new Blob([bytes], { type: "application/pdf" }));
+const bytes = await pdf.save();
+const normalizedBytes = new Uint8Array(bytes.length);
+normalizedBytes.set(bytes);
+
+triggerDownload(
+  `${safeName(document.meta.title)}.pdf`,
+  new Blob([normalizedBytes], { type: "application/pdf" })
+);
 }
