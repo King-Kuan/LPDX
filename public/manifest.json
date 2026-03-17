@@ -1,0 +1,22 @@
+{
+  "name": "LightDoc Studio",
+  "short_name": "LightDoc",
+  "description": "Create lightweight .lpdx documents",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F2F1ED",
+  "theme_color": "#0F6E3A",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
