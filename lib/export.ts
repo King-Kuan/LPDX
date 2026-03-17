@@ -264,3 +264,9 @@ export function triggerDownload(bytes: Uint8Array, filename: string) {
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
 }
+// After pdfDoc.save()
+const pdfBytes = await pdfDoc.save({ 
+  useObjectStreams: true,  // compresses object streams
+  addDefaultPage: false,
+  objectsPerTick: 50,
+});
