@@ -51,17 +51,23 @@ export async function readFileAsArrayBuffer(file: File): Promise<ArrayBuffer> {
   });
 }
 
-// Extract text from an imported PDF by reading embedded text streams
 export async function extractPdfText(arrayBuffer: ArrayBuffer): Promise<string> {
-  const { PDFDocument } = await import('pdf-lib');
-  try {
-    const pdfDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
-    const pageCount = pdfDoc.getPageCount();
-    // pdf-lib doesn't extract text directly; return page count info
-    return `[Imported PDF — ${pageCount} page${pageCount !== 1 ? 's' : ''} detected. Content preserved as scanned image layer with OCR text overlay.]`;
-  } catch {
-    return '[PDF imported — text extraction requires OCR processing]';
+  const pdfjsLib = await import('pdfjs-dist');
+  pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.js`;
+
+  const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+  let fullText = '';
+
+  for (let i = 1; i <= pdf.numPages; i++) {
+    const page = await pdf.getPage(i);
+    const content = await page.getTextContent();
+    const pageText = content.items
+      .map((item: any) => ('str' in item ? item.str : ''))
+      .join(' ');
+    fullText += pageText + '\n\n';
   }
+
+  return fullText.trim() || '[No text found — PDF may be scanned. Try the Scan tab for OCR.]';
 }
 
 export async function importDocxText(arrayBuffer: ArrayBuffer): Promise<string> {
